@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego Eldrow</title>
+    <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+    <div id="izquierda">
+        <button id="botonInstrucciones" class="instructions-toggle">
+            <span class="instructions-toggle-icon">❓</span>
+        </button>
+    </div>
+    <div id="derecha">
+        <button id="botonTema" class="theme-toggle">
+            <span class="theme-toggle-icon">🌞</span>
+        </button>
+        <button id="botonDaltonico" class="colorblind-toggle" aria-label="Activar modo daltónico">
+            <span class="colorblind-toggle-icon">👁️</span>
+        </button>
+    </div>
+
+    <div id="modalInstrucciones" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Instrucciones</h2>
+            <p>Adivina la palabra oculta en seis intentos.</p>
+            <div class="instruction-grid">
+                <div class="instruction-box">
+                    <p>Las letras en <strong style="color: #6aaa64">verde</strong> están en la posición correcta</p>
+                </div>
+                <div class="instruction-box">
+                    <p>Las letras en <strong style="color: #c9b458">amarillo</strong> están en la palabra pero en otra posición</p>
+                </div>
+                <div class="instruction-box">
+                    <p>Las letras en <strong style="color: #787c7e">gris</strong> no están en la palabra</p>
+                </div>
+            </div>
+            <p>¡Cada intento debe ser una palabra válida de 5 letras!</p>
+        </div>
+    </div>
+
+    <div class="welcome-page" id="paginaBienvenida">
+        <h1 class="welcome-title">Bienvenido a Eldrow</h1>
+        <div class="instructions">
+            <p>Adivina la palabra oculta en seis intentos.</p>
+            <div class="instruction-grid">
+                <div class="instruction-box">
+                    <p>Las letras en <strong style="color: #6aaa64">verde</strong> están en la posición correcta</p>
+                </div>
+                <div class="instruction-box">
+                    <p>Las letras en <strong style="color: #c9b458">amarillo</strong> están en la palabra pero en otra posición</p>
+                </div>
+                <div class="instruction-box">
+                    <p>Las letras en <strong style="color: #787c7e">gris</strong> no están en la palabra</p>
+                </div>
+            </div>
+            <p>¡Cada intento debe ser una palabra válida de 5 letras!</p>
+        </div>
+        <button class="play-button" id="botonJugar">¡Jugar!</button>
+    </div>
+
+    <div class="game-container" id="contenedorJuego">
+        <div class="div_juego">
+            <h1 class="titulo">Eldrow</h1>
+            <div id="cuadricula" class="cuadricula"></div>
+            <div id="teclado_virtual"></div>
+        </div>
+    </div>
+
+    <div id="mensaje_alerta" class="mensaje_alerta">
+        <p id="mensajeTexto"></p>
+        <button id="botonVolverJugar" class="play-again-button">Volver a jugar</button>
+    </div>
+
+    <script src="js/juego.js" type="module"></script>
+</body>
+</html>
+

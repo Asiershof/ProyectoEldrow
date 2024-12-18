@@ -1,0 +1,448 @@
+/* Variables de tema */
+:root {
+    --bg-color: #f0f2f5;
+    --text-color: #1a1a1a;
+    --card-bg: white;
+    --border-color: #d3d6da;
+    --key-bg: #d3d6da;
+    --key-hover: #bbbfc3;
+    --instruction-box-bg: #f8f9fa;
+}
+
+[data-theme="dark"] {
+    --bg-color: #121213;
+    --text-color: #ffffff;
+    --card-bg: #2f2f31;
+    --border-color: #3a3a3c;
+    --key-bg: #818384;
+    --key-hover: #6e6e6e;
+    --instruction-box-bg: #1a1a1b;
+}
+
+/* Modo daltónico */
+[data-colorblind="true"] .correcto {
+    background-color: #f5793a;
+    border-color: #f5793a;
+}
+
+[data-colorblind="true"] .presente {
+    background-color: #85c0f9;
+    border-color: #85c0f9;
+}
+
+[data-colorblind="true"] .tecla.correcto {
+    background-color: #f5793a;
+}
+
+[data-colorblind="true"] .tecla.presente {
+    background-color: #85c0f9;
+}
+
+/* Añadir después de los estilos del botón de modo daltónico */
+
+.colorblind-toggle.active {
+    background-color: var(--key-bg);
+    border-color: var(--text-color);
+}
+
+.colorblind-notice {
+    position: fixed;
+    top: 5rem;
+    right: 1rem;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.colorblind-notice.show {
+    opacity: 1;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Botón de tema */
+.theme-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+/* Botón de modo daltónico */
+.colorblind-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 5rem; /* Cambiado de 4rem a 5rem para añadir separación */
+    background: none;
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.colorblind-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+/* Botón de instrucciones */
+.instructions-toggle {
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    background: none;
+    border: 2px solid var(--border-color);
+    color: var(--text-color);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.instructions-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+/* Página de bienvenida */
+.welcome-page {
+    text-align: center;
+    max-width: 600px;
+    padding: 2rem;
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s;
+}
+
+.welcome-title {
+    color: var(--text-color);
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.instructions {
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+
+.instruction-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.instruction-box {
+    background-color: var(--instruction-box-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.play-button {
+    background-color: #3eba1b;
+    color: white;
+    border: none;
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.play-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(106, 170, 100, 0.4);
+    background-color: #5c9658;
+}
+
+.play-button:active {
+    transform: translateY(0);
+}
+
+/* Contenedor del juego */
+.game-container {
+    display: none;
+}
+
+.game-container.visible {
+    display: block;
+}
+
+.div_juego {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.titulo {
+    color: var(--text-color);
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+/* Cuadrícula */
+.cuadricula {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.fila {
+    display: flex;
+    gap: 5px;
+}
+
+.celda {
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+/* Estados de las celdas */
+.correcto {
+    background-color: #3eba1b;
+    color: white;
+    border-color: #3eba1b;
+}
+
+.presente {
+    background-color: #c9b458;
+    color: white;
+    border-color: #c9b458;
+}
+
+.ausente {
+    background-color: #787c7e;
+    color: white;
+    border-color: #787c7e;
+}
+
+/* Teclado */
+.teclado {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+}
+
+.fila-teclado {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+}
+
+.tecla {
+    min-width: 40px;
+    height: 58px;
+    border-radius: 4px;
+    border: none;
+    background-color: var(--key-bg);
+    color: var(--text-color);
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.tecla:not(.ausente):hover {
+    background-color: var(--key-hover);
+    transform: scale(1.05);
+}
+
+.tecla.presente {
+    background-color: #c9b458;
+    color: white;
+}
+
+.tecla.correcto {
+    background-color: #3eba1b;
+    color: white;
+}
+
+.tecla.ausente {
+    background-color: #787c7e;
+    color: white;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.tecla-ancha {
+    min-width: 65px;
+}
+
+/* Mensaje de alerta y botón de volver a jugar */
+.mensaje_alerta {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.mensaje_alerta.mostrar {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.play-again-button {
+    background-color: #3eba1b;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+    display: block;
+    width: 100%;
+    max-width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.play-again-button:hover {
+    background-color: #5c9658;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para la ventana modal de instrucciones */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    margin: 10% auto;
+    padding: 30px;
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    width: 90%;
+    max-width: 600px;
+    color: var(--text-color);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+
+.close {
+    color: var(--text-color);
+    float: right;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close:hover,
+.close:focus {
+    color: #888;
+    text-decoration: none;
+}
+
+.modal h2 {
+    color: var(--text-color);
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.modal p {
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.modal .instruction-grid {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.modal .instruction-box {
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
