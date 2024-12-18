@@ -14,6 +14,7 @@ class Juego {
         this.intentosMaximos = 6;
         this.juegoTerminado = false;
         this.letrasDeshabilitadas = new Set();
+        this.configurarEventosTeclado();
         
         this.inicializarInterfaz();
     }
@@ -131,7 +132,6 @@ class Juego {
         
         this.crearCuadricula();
         this.crearTeclado();
-        this.configurarEventosTeclado();
         
         // Ocultar el mensaje de alerta si está visible
         const mensajeAlerta = document.getElementById('mensaje_alerta');
@@ -192,7 +192,8 @@ class Juego {
     }
 
     configurarEventosTeclado() {
-        document.addEventListener('keydown', (e) => {
+        document.removeEventListener('keydown', this.manejarEventoTeclado);
+        this.manejarEventoTeclado = (e) => {
             const tecla = e.key.toUpperCase();
             if (tecla === 'ENTER') {
                 this.manejarTecla('ENTER');
@@ -201,7 +202,8 @@ class Juego {
             } else if (/^[A-ZÑ]$/.test(tecla) && !this.letrasDeshabilitadas.has(tecla)) {
                 this.manejarTecla(tecla);
             }
-        });
+        };
+        document.addEventListener('keydown', this.manejarEventoTeclado);
     }
 
     manejarTecla(tecla) {
