@@ -21,24 +21,22 @@
 
 /* Modo daltónico */
 [data-colorblind="true"] .correcto {
-    background-color: #f5793a;
-    border-color: #f5793a;
-}
-
-[data-colorblind="true"] .presente {
     background-color: #85c0f9;
     border-color: #85c0f9;
 }
 
-[data-colorblind="true"] .tecla.correcto {
+[data-colorblind="true"] .presente {
     background-color: #f5793a;
+    border-color: #f5793a;
 }
 
-[data-colorblind="true"] .tecla.presente {
+[data-colorblind="true"] .tecla.correcto {
     background-color: #85c0f9;
 }
 
-/* Añadir después de los estilos del botón de modo daltónico */
+[data-colorblind="true"] .tecla.presente {
+    background-color: #f5793a;
+}
 
 .colorblind-toggle.active {
     background-color: var(--key-bg);
@@ -105,7 +103,7 @@ body {
 .colorblind-toggle {
     position: fixed;
     top: 1rem;
-    right: 5rem; /* Cambiado de 4rem a 5rem para añadir separación */
+    right: 5rem;
     background: none;
     border: 2px solid var(--border-color);
     color: var(--text-color);
@@ -186,6 +184,12 @@ body {
     padding: 1rem;
     border-radius: 8px;
     transition: background-color 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.instruction-box p {
+    margin: 0;
 }
 
 .play-button {
@@ -340,8 +344,8 @@ body {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.9);
+    transform: translate(-50%, 0%);
+    background-color: rgba(0, 0, 0, 0.7);
     color: white;
     padding: 20px;
     border-radius: 10px;
@@ -433,6 +437,7 @@ body {
 .modal p {
     margin-bottom: 15px;
     line-height: 1.6;
+    text-align: center;
 }
 
 .modal .instruction-grid {
@@ -446,3 +451,8 @@ body {
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
+.colorblind-info {
+    margin-top: 1.5rem;
+    font-style: italic;
+    text-align: center;
+}
