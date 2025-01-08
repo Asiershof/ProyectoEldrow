@@ -301,7 +301,7 @@ class Juego {
         const teclas = document.querySelectorAll('.tecla');
         teclas.forEach(tecla => {
             if (tecla.textContent === letra) {
-                if (estado === 'ausente') {
+                if (estado === 'ausente' && !this.palabra.includes(letra)) {
                     this.letrasDeshabilitadas.add(letra);
                     tecla.classList.add('deshabilitada');
                 }
@@ -314,6 +314,7 @@ class Juego {
             }
         });
     }
+    
 
     actualizarInterfaz() {
         const filaActual = document.querySelector('.cuadricula').children[this.intentos.length];
