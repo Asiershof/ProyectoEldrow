@@ -138,10 +138,13 @@ class Juego {
         this.juegoTerminado = false;
         this.letrasDeshabilitadas.clear();
         
+        document.querySelectorAll('.tecla').forEach(tecla => {
+            tecla.classList.remove('deshabilitada', 'presente', 'ausente', 'correcto');
+        });
+        
         this.crearCuadricula();
         this.crearTeclado();
         
-        // Ocultar el mensaje de alerta si está visible
         const mensajeAlerta = document.getElementById('mensaje_alerta');
         mensajeAlerta.classList.remove('mostrar');
     }
@@ -186,7 +189,7 @@ class Juego {
                     boton.classList.add('tecla-ancha');
                 }
                 boton.addEventListener('click', () => {
-                    if (!this.letrasDeshabilitadas.has(tecla)) {
+                    if (!this.letrasDeshabilitadas.has(tecla) || tecla === 'ENTER' || tecla === 'Borrar') {
                         this.manejarTecla(tecla);
                     }
                 });
@@ -221,7 +224,7 @@ class Juego {
             this.confirmarIntento();
         } else if (tecla === 'Borrar') {
             this.borrarLetra();
-        } else if (this.intentoActual.length < 5) {
+        } else if (!this.letrasDeshabilitadas.has(tecla) && this.intentoActual.length < 5) {
             this.agregarLetra(tecla);
         }
     }
@@ -242,17 +245,32 @@ class Juego {
 
     confirmarIntento() {
         if (this.intentoActual.length !== 5) return;
-
-        const resultado = this.intentoActual.split('').map((letra, indice) => {
-            if (letra === this.palabra[indice]) {
-                return { letra, estado: 'correcto' };
-            } else if (this.palabra.includes(letra)) {
-                return { letra, estado: 'presente' };
-            } else {
-                return { letra, estado: 'ausente' };
+    
+        const letrasRestantes = [...this.palabra];
+        const resultado = new Array(5).fill(null);
+        const letrasIntento = [...this.intentoActual];
+        
+        // Primer paso: Marcar las letras correctas
+        letrasIntento.forEach((letra, i) => {
+            if (letra === this.palabra[i]) {
+                resultado[i] = { letra, estado: 'correcto' };
+                letrasRestantes[i] = null;
             }
         });
-
+    
+        // Segundo paso: Marcar las letras presentes o ausentes
+        letrasIntento.forEach((letra, i) => {
+            if (!resultado[i]) {
+                const indiceLetraRestante = letrasRestantes.indexOf(letra);
+                if (indiceLetraRestante !== -1) {
+                    resultado[i] = { letra, estado: 'presente' };
+                    letrasRestantes[indiceLetraRestante] = null;
+                } else {
+                    resultado[i] = { letra, estado: 'ausente' };
+                }
+            }
+        });
+    
         this.intentos.push(resultado);
         this.actualizarCuadricula(resultado);
         
@@ -264,7 +282,7 @@ class Juego {
         } else if (this.juegoTerminado) {
             this.mostrarMensaje(`¡Juego terminado! La palabra era ${this.palabra}`);
         }
-
+    
         this.intentoActual = '';
         this.actualizarInterfaz();
     }
@@ -285,8 +303,12 @@ class Juego {
             if (tecla.textContent === letra) {
                 if (estado === 'ausente') {
                     this.letrasDeshabilitadas.add(letra);
-                    tecla.classList.add(estado);
-                } else {
+                    tecla.classList.add('deshabilitada');
+                }
+                if (estado === 'correcto' || 
+                    (estado === 'presente' && !tecla.classList.contains('correcto')) ||
+                    (estado === 'ausente' && !tecla.classList.contains('correcto') && !tecla.classList.contains('presente'))) {
+                    tecla.classList.remove('presente', 'ausente', 'correcto');
                     tecla.classList.add(estado);
                 }
             }
@@ -320,4 +342,3 @@ class Juego {
 
 // Iniciar el juego
 new Juego();
-
