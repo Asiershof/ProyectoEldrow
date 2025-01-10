@@ -225,6 +225,14 @@ body {
     display: block;
 }
 
+.game-container.celebracion {
+    position: relative;
+}
+
+.game-container.celebracion::after {
+    display: none;
+}
+
 .div_juego {
     display: flex;
     flex-direction: column;
@@ -342,12 +350,12 @@ body {
 /* Mensaje de alerta y botón de volver a jugar */
 .mensaje_alerta {
     position: fixed;
-    top: 50%;
+    top: 40%;
     left: 50%;
     transform: translate(-50%, 0%);
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgb(0 0 0 / 60%);
     color: white;
-    padding: 20px;
+    padding: 15px 30px;
     border-radius: 10px;
     font-size: 1.2rem;
     text-align: center;
@@ -384,6 +392,11 @@ body {
     background-color: #5c9658;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.play-again-button:focus {
+    outline: 2px solid #3eba1b;
+    outline-offset: 2px;
 }
 
 /* Estilos para la ventana modal de instrucciones */
@@ -456,3 +469,72 @@ body {
     font-style: italic;
     text-align: center;
 }
+
+/* Estilos para los fuegos artificiales */
+.fuegos-artificiales-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1; /* Coloca los fuegos artificiales detrás del contenido */
+}
+
+#fuegos-artificiales-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.fuego {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    transform: scale(0);
+}
+
+.fuego::before, .fuego::after {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    opacity: 0;
+}
+
+@keyframes fuego-animacion {
+    0% {
+        transform: scale(0) translate(-50%, 0);
+        opacity: 1;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1) translate(-50%, -1000%);
+        opacity: 0;
+    }
+}
+
+@keyframes explosion {
+    0% {
+        width: 0%;
+        height: 0%;
+        opacity: 0.5;
+    }
+    100% {
+        width: 300%;
+        height: 300%;
+        opacity: 0;
+    }
+}
+

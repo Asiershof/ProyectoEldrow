@@ -16,15 +16,31 @@ const PALABRAS = [
 
 class Juego {
     constructor() {
-        this.palabra = '';
+        this.intentosMaximos = 6;
+        this.inicializarInterfaz();
+        this.inicializarJuego();
+        this.configurarEventosTeclado();
+    }
+
+    inicializarJuego() {
+        this.palabra = this.obtenerPalabraAleatoria();
         this.intentos = [];
         this.intentoActual = '';
-        this.intentosMaximos = 6;
         this.juegoTerminado = false;
-        this.letrasDeshabilitadas = new Set();
-        this.configurarEventosTeclado();
-        
-        this.inicializarInterfaz();
+        this.crearCuadricula();
+        this.crearTeclado();
+        document.querySelectorAll('.tecla').forEach(tecla => {
+            tecla.classList.remove('ausente', 'presente', 'correcto');
+        });
+        const botonVolverJugar = document.getElementById('botonVolverJugar');
+        botonVolverJugar.style.display = 'none';
+        const mensajeAlerta = document.getElementById('mensaje_alerta');
+        mensajeAlerta.classList.remove('mostrar');
+        this.actualizarInterfaz();
+    }
+
+    obtenerPalabraAleatoria() {
+        return PALABRAS[Math.floor(Math.random() * PALABRAS.length)];
     }
 
     inicializarInterfaz() {
@@ -125,28 +141,47 @@ class Juego {
 
     configurarBotonVolverJugar() {
         const botonVolverJugar = document.getElementById('botonVolverJugar');
-        botonVolverJugar.addEventListener('click', () => {
-            this.iniciarJuego();
+        
+        const reiniciarJuego = (eventoReinicio) => {
+            if (eventoReinicio) {
+                eventoReinicio.preventDefault();
+                eventoReinicio.stopPropagation();
+            }
+            this.inicializarJuego();
             document.getElementById('mensaje_alerta').classList.remove('mostrar');
+        };
+    
+        // Remover escuchadores anteriores
+        const nuevoBoton = botonVolverJugar.cloneNode(true);
+        botonVolverJugar.parentNode.replaceChild(nuevoBoton, botonVolverJugar);
+        
+        // Agregar nuevo escuchador para el clic
+        nuevoBoton.addEventListener('click', reiniciarJuego);
+    
+        // Manejar teclas Enter y Espacio
+        document.addEventListener('keydown', (eventoTecla) => {
+            if (nuevoBoton.style.display === 'block' && 
+                (eventoTecla.key === 'Enter' || eventoTecla.key === ' ')) {
+                eventoTecla.preventDefault(); // Prevenir la propagación del evento
+                eventoTecla.stopPropagation(); // Detener la propagación
+                reiniciarJuego(eventoTecla);
+            }
         });
     }
 
     iniciarJuego() {
-        this.palabra = PALABRAS[Math.floor(Math.random() * PALABRAS.length)];
+        this.palabra = this.obtenerPalabraAleatoria();
         this.intentos = [];
         this.intentoActual = '';
         this.juegoTerminado = false;
-        this.letrasDeshabilitadas.clear();
-        
-        document.querySelectorAll('.tecla').forEach(tecla => {
-            tecla.classList.remove('deshabilitada', 'presente', 'ausente', 'correcto');
-        });
-        
         this.crearCuadricula();
         this.crearTeclado();
-        
+        document.querySelectorAll('.tecla').forEach(tecla => {
+            tecla.classList.remove('ausente', 'presente', 'correcto');
+        });
         const mensajeAlerta = document.getElementById('mensaje_alerta');
         mensajeAlerta.classList.remove('mostrar');
+        this.actualizarInterfaz();
     }
 
     crearCuadricula() {
@@ -169,7 +204,7 @@ class Juego {
         const teclas = [
             ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
             ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Ñ'],
-            ['Borrar', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'ENTER']
+            ['BORRAR', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'ENTER']
         ];
 
         const contenedorTeclado = document.getElementById('teclado_virtual');
@@ -185,14 +220,11 @@ class Juego {
                 const boton = document.createElement('button');
                 boton.textContent = tecla;
                 boton.className = 'tecla';
-                if (tecla === 'ENTER' || tecla === 'Borrar') {
+                boton.setAttribute('data-key', tecla);
+                if (tecla === 'ENTER' || tecla === 'BORRAR') {
                     boton.classList.add('tecla-ancha');
                 }
-                boton.addEventListener('click', () => {
-                    if (!this.letrasDeshabilitadas.has(tecla) || tecla === 'ENTER' || tecla === 'Borrar') {
-                        this.manejarTecla(tecla);
-                    }
-                });
+                boton.addEventListener('click', () => this.manejarTecla(tecla));
                 filaDiv.appendChild(boton);
             });
 
@@ -202,31 +234,21 @@ class Juego {
         contenedorTeclado.appendChild(teclado);
     }
 
-    configurarEventosTeclado() {
-        document.removeEventListener('keydown', this.manejarEventoTeclado);
-        this.manejarEventoTeclado = (e) => {
-            const tecla = e.key.toUpperCase();
-            if (tecla === 'ENTER') {
-                this.manejarTecla('ENTER');
-            } else if (tecla === 'BACKSPACE') {
-                this.manejarTecla('Borrar');
-            } else if (/^[A-ZÑ]$/.test(tecla) && !this.letrasDeshabilitadas.has(tecla)) {
-                this.manejarTecla(tecla);
-            }
-        };
-        document.addEventListener('keydown', this.manejarEventoTeclado);
-    }
-
     manejarTecla(tecla) {
         if (this.juegoTerminado) return;
 
         if (tecla === 'ENTER') {
             this.confirmarIntento();
-        } else if (tecla === 'Borrar') {
+        } else if (tecla === 'BORRAR') {
             this.borrarLetra();
-        } else if (!this.letrasDeshabilitadas.has(tecla) && this.intentoActual.length < 5) {
-            this.agregarLetra(tecla);
+        } else if (this.intentoActual.length < 5) {
+            // Verificar si la tecla está bloqueada
+            const teclaElemento = document.querySelector(`.tecla[data-key="${tecla}"]`);
+            if (teclaElemento && !teclaElemento.classList.contains('ausente')) {
+                this.agregarLetra(tecla);
+            }
         }
+        this.actualizarInterfaz();
     }
 
     agregarLetra(letra) {
@@ -243,76 +265,236 @@ class Juego {
         }
     }
 
+    esIntentoValido(intento) {
+        return intento.length === 5;
+    }
+
     confirmarIntento() {
-        if (this.intentoActual.length !== 5) return;
-    
-        const letrasRestantes = [...this.palabra];
+        if (!this.esIntentoValido(this.intentoActual)) {
+            this.mostrarMensaje('La palabra debe tener 5 letras');
+            return;
+        }
+
         const resultado = new Array(5).fill(null);
-        const letrasIntento = [...this.intentoActual];
+        const contadorLetras = {};
         
+        // Contar las ocurrencias de cada letra en la palabra objetivo
+        for (let letra of this.palabra) {
+            contadorLetras[letra] = (contadorLetras[letra] || 0) + 1;
+        }
+
         // Primer paso: Marcar las letras correctas
-        letrasIntento.forEach((letra, i) => {
-            if (letra === this.palabra[i]) {
-                resultado[i] = { letra, estado: 'correcto' };
-                letrasRestantes[i] = null;
+        for (let i = 0; i < 5; i++) {
+            if (this.intentoActual[i] === this.palabra[i]) {
+                resultado[i] = { letra: this.intentoActual[i], estado: 'correcto' };
+                contadorLetras[this.intentoActual[i]]--;
             }
-        });
-    
+        }
+
         // Segundo paso: Marcar las letras presentes o ausentes
-        letrasIntento.forEach((letra, i) => {
+        for (let i = 0; i < 5; i++) {
             if (!resultado[i]) {
-                const indiceLetraRestante = letrasRestantes.indexOf(letra);
-                if (indiceLetraRestante !== -1) {
-                    resultado[i] = { letra, estado: 'presente' };
-                    letrasRestantes[indiceLetraRestante] = null;
+                if (contadorLetras[this.intentoActual[i]] > 0) {
+                    resultado[i] = { letra: this.intentoActual[i], estado: 'presente' };
+                    contadorLetras[this.intentoActual[i]]--;
                 } else {
-                    resultado[i] = { letra, estado: 'ausente' };
+                    resultado[i] = { letra: this.intentoActual[i], estado: 'ausente' };
                 }
             }
-        });
-    
+        }
+
         this.intentos.push(resultado);
         this.actualizarCuadricula(resultado);
         
         const esGanador = this.intentoActual === this.palabra;
         this.juegoTerminado = esGanador || this.intentos.length >= this.intentosMaximos;
         
-        if (esGanador) {
-            this.mostrarMensaje('¡Ganaste! 🎉');
-        } else if (this.juegoTerminado) {
-            this.mostrarMensaje(`¡Juego terminado! La palabra era ${this.palabra}`);
+        if (this.juegoTerminado) {
+            setTimeout(() => {
+                if (esGanador) {
+                    this.mostrarMensajeVictoria();
+                } else {
+                    this.mostrarMensaje(`¡Juego terminado! La palabra era ${this.palabra}`);
+                }
+                document.getElementById('botonVolverJugar').style.display = 'block';
+            }, 500); // Esperar a que termine la animación de la última palabra
         }
-    
+
         this.intentoActual = '';
         this.actualizarInterfaz();
     }
 
-    actualizarCuadricula(resultado) {
-        const fila = document.querySelector('.cuadricula').children[this.intentos.length - 1];
+    mostrarMensajeVictoria() {
+        this.mostrarFuegosArtificiales();
+        setTimeout(() => {
+            this.mostrarMensaje('¡Ganaste! 🎉');
+        }, 2000); // Retrasa el mensaje de victoria para que los fuegos artificiales se vean primero
+    }
+
+    mostrarFuegosArtificiales() {
+        const container = document.createElement('div');
+        container.className = 'fuegos-artificiales-container';
+        document.body.appendChild(container);
+
+        const canvas = document.createElement('canvas');
+        canvas.id = 'fuegos-artificiales-canvas';
+        container.appendChild(canvas);
+
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let fireworks = [];
+        let particles = [];
+
+        function Firework() {
+            this.x = Math.random() * canvas.width;
+            this.y = canvas.height;
+            this.sx = Math.random() * 3 - 1.5;
+            this.sy = -Math.random() * 7 - 7; // Aumentado para que suban más rápido
+            this.size = 3;
+            this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+
+            this.update = function() {
+                this.x += this.sx;
+                this.y += this.sy;
+                this.sy += 0.1;
+                if (this.size > 0.1) this.size -= 0.1;
+            }
+
+            this.draw = function() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function Particle(x, y, color) {
+            this.x = x;
+            this.y = y;
+            this.size = Math.random() * 3 + 1;
+            this.speedX = Math.random() * 8 - 4;
+            this.speedY = Math.random() * 8 - 4;
+            this.color = color;
+
+            this.update = function() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.size -= 0.1;
+            }
+
+            this.draw = function() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function createParticles(x, y, color) {
+            const particleCount = 150; // Aumentado para más partículas
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle(x, y, color));
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (Math.random() < 0.2) { // Aumentado para más frecuencia
+                fireworks.push(new Firework());
+            }
+
+            for (let i = 0; i < fireworks.length; i++) {
+                fireworks[i].update();
+                fireworks[i].draw();
+
+                if (fireworks[i].sy >= 0) {
+                    createParticles(fireworks[i].x, fireworks[i].y, fireworks[i].color);
+                    fireworks.splice(i, 1);
+                    i--;
+                }
+            }
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+
+                if (particles[i].size <= 0.1) {
+                    particles.splice(i, 1);
+                    i--;
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Ajustar el tamaño del canvas cuando cambia el tamaño de la ventana
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        setTimeout(() => {
+            container.remove();
+        }, 10000);
+    }
+
+    crearExplosion(fuegoElemento) {
+        const explosion = document.createElement('div');
+        explosion.className = 'fuego';
+        explosion.style.left = fuegoElemento.style.left;
+        explosion.style.bottom = fuegoElemento.style.bottom;
+        explosion.style.backgroundColor = fuegoElemento.style.backgroundColor;
+
+        const particulas = 30;
+        for (let i = 0; i < particulas; i++) {
+            const particula = document.createElement('div');
+            particula.className = 'fuego';
+            const angulo = (i / particulas) * 360;
+            const distancia = 50 + Math.random() * 50;
+            particula.style.transform = `rotate(${angulo}deg) translate(${distancia}px)`;
+            particula.style.backgroundColor = fuegoElemento.style.backgroundColor;
+            particula.style.animation = `explosion 1s ease-out forwards`;
+            explosion.appendChild(particula);
+        }
+
+        fuegoElemento.parentNode.appendChild(explosion);
+        setTimeout(() => explosion.remove(), 1000);
+    }
+
+    animarCeldas(fila, resultado) {
         resultado.forEach((letra, indice) => {
-            const celda = fila.children[indice];
-            celda.textContent = letra.letra;
-            celda.classList.add(letra.estado);
-            this.actualizarEstadoTecla(letra.letra, letra.estado);
+            setTimeout(() => {
+                const celda = fila.children[indice];
+                celda.textContent = letra.letra;
+                celda.classList.add(letra.estado, 'revelada');
+                this.actualizarEstadoTecla(letra.letra, letra.estado);
+            }, indice * 250);
         });
     }
 
+    actualizarCuadricula(resultado) {
+        const fila = document.querySelector('.cuadricula').children[this.intentos.length - 1];
+        this.animarCeldas(fila, resultado);
+    }
+
     actualizarEstadoTecla(letra, estado) {
-        const teclas = document.querySelectorAll('.tecla');
-        teclas.forEach(tecla => {
-            if (tecla.textContent === letra) {
-                if (estado === 'ausente' && !this.palabra.includes(letra)) {
-                    this.letrasDeshabilitadas.add(letra);
-                    tecla.classList.add('deshabilitada');
-                }
-                if (estado === 'correcto' || 
-                    (estado === 'presente' && !tecla.classList.contains('correcto')) ||
-                    (estado === 'ausente' && !tecla.classList.contains('correcto') && !tecla.classList.contains('presente'))) {
-                    tecla.classList.remove('presente', 'ausente', 'correcto');
-                    tecla.classList.add(estado);
-                }
+        const tecla = document.querySelector(`.tecla:not(.tecla-ancha)[data-key="${letra}"]`);
+        if (tecla) {
+            if (estado === 'correcto') {
+                tecla.classList.remove('presente', 'ausente');
+                tecla.classList.add('correcto');
+            } else if (estado === 'presente' && !tecla.classList.contains('correcto')) {
+                tecla.classList.remove('ausente');
+                tecla.classList.add('presente');
+            } else if (estado === 'ausente' && !tecla.classList.contains('correcto') && !tecla.classList.contains('presente')) {
+                tecla.classList.add('ausente');
             }
-        });
+        }
     }
     
 
@@ -339,7 +521,31 @@ class Juego {
             setTimeout(() => mensaje.classList.remove('mostrar'), 3000);
         }
     }
+
+
+    configurarEventosTeclado() {
+        document.addEventListener('keydown', (eventoTeclado) => {
+            // Verificar primero si el botón está visible
+            const botonVolverJugar = document.getElementById('botonVolverJugar');
+            if (botonVolverJugar && botonVolverJugar.style.display === 'block') {
+                return; // No procesar ninguna tecla si el botón está visible
+            }
+    
+            if (this.juegoTerminado) return;
+    
+            const teclaPresionada = eventoTeclado.key.toUpperCase();
+            if (teclaPresionada === 'ENTER') {
+                eventoTeclado.preventDefault();
+                this.manejarTecla('ENTER');
+            } else if (teclaPresionada === 'BACKSPACE') {
+                this.manejarTecla('BORRAR');
+            } else if (/^[A-ZÑ]$/.test(teclaPresionada)) {
+                this.manejarTecla(teclaPresionada);
+            }
+        }, { capture: true }); // Usar capture para asegurar que este manejador se ejecute primero
+    }
 }
 
 // Iniciar el juego
 new Juego();
+
