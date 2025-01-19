@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Juego Eldrow</title>
     <link rel="stylesheet" href="css/style.css"/>
+    <link rel="icon" href="img/LogoEldrow.ico" type="image/x-icon">
 </head>
 <body>
     <div id="izquierda">
@@ -43,7 +44,10 @@
     </div>
 
     <div class="welcome-page" id="paginaBienvenida">
-        <h1 class="welcome-title">Bienvenido a Eldrow</h1>
+        <div class="welcome-header">
+            <img src="img/LogoEldrow.png" alt="Logo Eldrow" class="logo-eldrow">
+            <h1 class="welcome-title">Eldrow</h1>
+        </div>
         <div class="instructions">
             <p>Adivina la palabra oculta en seis intentos.</p>
             <div class="instruction-grid">
@@ -65,7 +69,10 @@
 
     <div class="game-container" id="contenedorJuego">
         <div class="div_juego">
-            <h1 class="titulo">Eldrow</h1>
+            <div class="game-header">
+                <img src="img/LogoEldrow.png" alt="Logo Eldrow" class="logo-eldrow">
+                <h1 class="titulo">Eldrow</h1>
+            </div>
             <div id="cuadricula" class="cuadricula"></div>
             <div id="teclado_virtual"></div>
         </div>
@@ -79,5 +86,4 @@
     <script src="js/juego.js" type="module"></script>
 </body>
 </html>
-
 

@@ -160,6 +160,21 @@ body {
     transition: background-color 0.3s;
 }
 
+/* Estilos para el logo */
+.logo-eldrow {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+/* Estilos para el encabezado de bienvenida */
+.welcome-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
 .welcome-title {
     color: var(--text-color);
     font-size: 2.5rem;
@@ -239,6 +254,14 @@ body {
     align-items: center;
     gap: 20px;
     padding: 20px;
+}
+
+/* Estilos para el encabezado del juego */
+.game-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
 .titulo {
@@ -468,6 +491,12 @@ body {
     margin-top: 1.5rem;
     font-style: italic;
     text-align: center;
+}
+
+/* Ajustar el tamaño del título */
+.welcome-title, .titulo {
+    font-size: 2.5rem;
+    margin: 0;
 }
 
 /* Estilos para los fuegos artificiales */
