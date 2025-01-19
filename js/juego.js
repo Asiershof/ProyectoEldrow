@@ -1,5 +1,17 @@
 const PALABRAS = [
-    
+    "ACERO", "ACTOR", "ANCHO", "ANTRO", "APOYO", "ASEOS", "ASIER", "AVION", 
+    "BALON", "BANCO", "BANDO", "BARCO", "BOLSA", "BOMBA", "BRAVO", "BROMA", 
+    "BULTO", "CABLE", "CALVO", "CAMPO", "CARGO", "CARNE", "CERCA", "CLAVE", 
+    "CLAVO", "COPIA", "CRUCE", "CUIDA", "CUERO", "DEBER", "DOLOR", "DUCHA", 
+    "DUEÑO", "DUDAR", "ENTRE", "EXITO", "FALSO", "FANGO", "FIRMA", "GENIO", 
+    "GENTE", "GIRAR", "GRANO", "GRAPA", "GRITO", "GUAPO", "GUISO", "HECHO", 
+    "HIELO", "HUEVO", "ISLAS", "JARRA", "JUGAR", "JULIO", "JUNIO", "JUNTA", 
+    "JURAR", "LAPSO", "LIBRO", "LIMBO", "LUNAR", "MARCO", "MANGO", "MATAR", 
+    "MORSE", "KOALA", "LARGO", "MUCHO", "MUNDO", "NACER", "NIEVE", "NOGAL", 
+    "OASIS", "ORDEN", "PIANO", "PLAZA", "PRESO", "PUNTA", "PUNTO", "QUESO", 
+    "RASCA", "RESTO", "RIGOR", "RUEDA", "RUMOR", "SABOR", "SANTO", "SAUNA", 
+    "SUEÑO", "TARDE", "TAREA", "TESIS", "TOMAR", "UNICO", "UNIDO", "VALOR", 
+    "VAPOR", "VERDE", "XENON", "YERMO", "ZEBRA", "ZORRA", "ZUMBA", "ZURDO"
 ];
 
 class Juego {
