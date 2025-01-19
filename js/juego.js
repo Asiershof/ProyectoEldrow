@@ -1,17 +1,5 @@
 const PALABRAS = [
-    "ACERO", "ACTOR", "ANCHO", "ANTRO", "APOYO", "ASEOS", "ASIER", "AVION", 
-    "BALON", "BANCO", "BANDO", "BARCO", "BOLSA", "BOMBA", "BRAVO", "BROMA", 
-    "BULTO", "CABLE", "CALVO", "CAMPO", "CARGO", "CARNE", "CERCA", "CLAVE", 
-    "CLAVO", "COPIA", "CRUCE", "CUIDA", "CUERO", "DEBER", "DOLOR", "DUCHA", 
-    "DUEÑO", "DUDAR", "ENTRE", "EXITO", "FALSO", "FANGO", "FIRMA", "GENIO", 
-    "GENTE", "GIRAR", "GRANO", "GRAPA", "GRITO", "GUAPO", "GUISO", "HECHO", 
-    "HIELO", "HUEVO", "ISLAS", "JARRA", "JUGAR", "JULIO", "JUNIO", "JUNTA", 
-    "JURAR", "LAPSO", "LIBRO", "LIMBO", "LUNAR", "MARCO", "MANGO", "MATAR", 
-    "MORSE", "KOALA", "LARGO", "MUCHO", "MUNDO", "NACER", "NIEVE", "NOGAL", 
-    "OASIS", "ORDEN", "PIANO", "PLAZA", "PRESO", "PUNTA", "PUNTO", "QUESO", 
-    "RASCA", "RESTO", "RIGOR", "RUEDA", "RUMOR", "SABOR", "SANTO", "SAUNA", 
-    "SUEÑO", "TARDE", "TAREA", "TESIS", "TOMAR", "UNICO", "UNIDO", "VALOR", 
-    "VAPOR", "VERDE", "XENON", "YERMO", "ZEBRA", "ZORRA", "ZUMBA", "ZURDO"
+    "ACERO"
 ];
 
 class Juego {
@@ -50,23 +38,26 @@ class Juego {
         this.configurarBotonInstrucciones();
         this.configurarBotonVolverJugar();
         this.configurarVentanaModal();
+        this.configurarVentanaMensaje();
     }
 
     configurarPaginaBienvenida() {
         const botonJugar = document.getElementById('botonJugar');
         const paginaBienvenida = document.getElementById('paginaBienvenida');
         const contenedorJuego = document.getElementById('contenedorJuego');
+        const botonInstrucciones = document.getElementById('botonInstrucciones');
 
         botonJugar.addEventListener('click', () => {
             paginaBienvenida.style.display = 'none';
             contenedorJuego.style.display = 'block';
+            botonInstrucciones.style.display = 'flex';
             this.iniciarJuego();
         });
     }
 
     configurarTemaOscuro() {
         const botonTema = document.getElementById('botonTema');
-        const icono = botonTema.querySelector('.theme-toggle-icon');
+        const icono = botonTema.querySelector('.icono-alternar-tema');
         const html = document.documentElement;
 
         const temaGuardado = localStorage.getItem('tema') || 'light';
@@ -88,7 +79,7 @@ class Juego {
         const botonDaltonico = document.getElementById('botonDaltonico');
         const html = document.documentElement;
         const aviso = document.createElement('div');
-        aviso.className = 'colorblind-notice';
+        aviso.className = 'aviso-daltonico';
         aviso.textContent = 'Modo daltónico activado';
         document.body.appendChild(aviso);
 
@@ -104,7 +95,7 @@ class Juego {
     establecerModoDaltonico(activar, html, boton, aviso) {
         html.setAttribute('data-colorblind', activar);
         localStorage.setItem('modoDaltonico', activar);
-        
+
         if (activar) {
             boton.classList.add('active');
             aviso.classList.add('show');
@@ -120,28 +111,37 @@ class Juego {
         const modal = document.getElementById('modalInstrucciones');
 
         botonInstrucciones.addEventListener('click', () => {
-            modal.style.display = 'block';
+            modal.style.display = 'flex';
         });
     }
 
     configurarVentanaModal() {
         const modal = document.getElementById('modalInstrucciones');
-        const span = document.getElementsByClassName('close')[0];
+        const span = document.getElementsByClassName('cerrar')[0];
 
-        span.onclick = function() {
+        span.onclick = function () {
             modal.style.display = 'none';
         }
 
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = 'none';
             }
         }
     }
 
+    configurarVentanaMensaje() {
+        const mensaje = document.getElementById('mensaje_alerta');
+        const span = document.getElementsByClassName('cerrar')[1];
+
+        span.onclick = function () {
+            mensaje.style.opacity = '0';
+        }
+    }
+
     configurarBotonVolverJugar() {
         const botonVolverJugar = document.getElementById('botonVolverJugar');
-        
+
         const reiniciarJuego = (eventoReinicio) => {
             if (eventoReinicio) {
                 eventoReinicio.preventDefault();
@@ -150,17 +150,17 @@ class Juego {
             this.inicializarJuego();
             document.getElementById('mensaje_alerta').classList.remove('mostrar');
         };
-    
+
         // Remover escuchadores anteriores
         const nuevoBoton = botonVolverJugar.cloneNode(true);
         botonVolverJugar.parentNode.replaceChild(nuevoBoton, botonVolverJugar);
-        
+
         // Agregar nuevo escuchador para el clic
         nuevoBoton.addEventListener('click', reiniciarJuego);
-    
+
         // Manejar teclas Enter y Espacio
         document.addEventListener('keydown', (eventoTecla) => {
-            if (nuevoBoton.style.display === 'block' && 
+            if (nuevoBoton.style.display === 'block' &&
                 (eventoTecla.key === 'Enter' || eventoTecla.key === ' ')) {
                 eventoTecla.preventDefault(); // Prevenir la propagación del evento
                 eventoTecla.stopPropagation(); // Detener la propagación
@@ -187,7 +187,7 @@ class Juego {
     crearCuadricula() {
         const cuadricula = document.getElementById('cuadricula');
         cuadricula.innerHTML = '';
-        
+
         for (let i = 0; i < this.intentosMaximos; i++) {
             const fila = document.createElement('div');
             fila.className = 'fila';
@@ -277,7 +277,7 @@ class Juego {
 
         const resultado = new Array(5).fill(null);
         const contadorLetras = {};
-        
+
         // Contar las ocurrencias de cada letra en la palabra objetivo
         for (let letra of this.palabra) {
             contadorLetras[letra] = (contadorLetras[letra] || 0) + 1;
@@ -305,16 +305,16 @@ class Juego {
 
         this.intentos.push(resultado);
         this.actualizarCuadricula(resultado);
-        
+
         const esGanador = this.intentoActual === this.palabra;
         this.juegoTerminado = esGanador || this.intentos.length >= this.intentosMaximos;
-        
+
         if (this.juegoTerminado) {
             setTimeout(() => {
                 if (esGanador) {
                     this.mostrarMensajeVictoria();
                 } else {
-                    this.mostrarMensaje(`¡Juego terminado! La palabra era ${this.palabra}`);
+                    this.mostrarMensaje(`¡Has perdido!😥 La palabra era ${this.palabra}`);
                 }
                 document.getElementById('botonVolverJugar').style.display = 'block';
             }, 500); // Esperar a que termine la animación de la última palabra
@@ -327,7 +327,7 @@ class Juego {
     mostrarMensajeVictoria() {
         this.mostrarFuegosArtificiales();
         setTimeout(() => {
-            this.mostrarMensaje('¡Ganaste! 🎉');
+            this.mostrarMensaje('¡Feliciadades! Has ganado');
         }, 2000); // Retrasa el mensaje de victoria para que los fuegos artificiales se vean primero
     }
 
@@ -355,14 +355,14 @@ class Juego {
             this.size = 3;
             this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
 
-            this.update = function() {
+            this.update = function () {
                 this.x += this.sx;
                 this.y += this.sy;
                 this.sy += 0.1;
                 if (this.size > 0.1) this.size -= 0.1;
             }
 
-            this.draw = function() {
+            this.draw = function () {
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -378,13 +378,13 @@ class Juego {
             this.speedY = Math.random() * 8 - 4;
             this.color = color;
 
-            this.update = function() {
+            this.update = function () {
                 this.x += this.speedX;
                 this.y += this.speedY;
                 this.size -= 0.1;
             }
 
-            this.draw = function() {
+            this.draw = function () {
                 ctx.fillStyle = this.color;
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -496,7 +496,7 @@ class Juego {
             }
         }
     }
-    
+
 
     actualizarInterfaz() {
         const filaActual = document.querySelector('.cuadricula').children[this.intentos.length];
@@ -510,10 +510,10 @@ class Juego {
         const mensaje = document.getElementById('mensaje_alerta');
         const mensajeTexto = document.getElementById('mensajeTexto');
         const botonVolverJugar = document.getElementById('botonVolverJugar');
-        
+
         mensajeTexto.textContent = texto;
         mensaje.classList.add('mostrar');
-        
+
         if (this.juegoTerminado) {
             botonVolverJugar.style.display = 'block';
         } else {
@@ -530,9 +530,9 @@ class Juego {
             if (botonVolverJugar && botonVolverJugar.style.display === 'block') {
                 return; // No procesar ninguna tecla si el botón está visible
             }
-    
+
             if (this.juegoTerminado) return;
-    
+
             const teclaPresionada = eventoTeclado.key.toUpperCase();
             if (teclaPresionada === 'ENTER') {
                 eventoTeclado.preventDefault();

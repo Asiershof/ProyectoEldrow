@@ -1,22 +1,22 @@
 /* Variables de tema */
 :root {
-    --bg-color: #f0f2f5;
-    --text-color: #1a1a1a;
-    --card-bg: white;
-    --border-color: #d3d6da;
-    --key-bg: #d3d6da;
-    --key-hover: #bbbfc3;
-    --instruction-box-bg: #f8f9fa;
+    --color-fondo: #f0f2f5;
+    --color-texto: #1a1a1a;
+    --color-tarjeta: white;
+    --color-borde: #d3d6da;
+    --color-tecla: #d3d6da;
+    --color-tecla-hover: #bbbfc3;
+    --color-caja-instruccion: #f3f3f3;
 }
 
 [data-theme="dark"] {
-    --bg-color: #121213;
-    --text-color: #ffffff;
-    --card-bg: #2f2f31;
-    --border-color: #3a3a3c;
-    --key-bg: #818384;
-    --key-hover: #6e6e6e;
-    --instruction-box-bg: #1a1a1b;
+    --color-fondo: #121213;
+    --color-texto: #ffffff;
+    --color-tarjeta: #2f2f31;
+    --color-borde: #3a3a3c;
+    --color-tecla: #818384;
+    --color-tecla-hover: #6e6e6e;
+    --color-caja-instruccion: #1a1a1b;
 }
 
 /* Modo daltónico */
@@ -38,12 +38,12 @@
     background-color: #f5793a;
 }
 
-.colorblind-toggle.active {
-    background-color: var(--key-bg);
-    border-color: var(--text-color);
+.alternar-daltonico.active {
+    background-color: var(--color-tecla);
+    border-color: var(--color-texto);
 }
 
-.colorblind-notice {
+.aviso-daltonico {
     position: fixed;
     top: 5rem;
     right: 1rem;
@@ -57,7 +57,7 @@
     pointer-events: none;
 }
 
-.colorblind-notice.show {
+.aviso-daltonico.show {
     opacity: 1;
 }
 
@@ -69,19 +69,19 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: var(--bg-color);
-    color: var(--text-color);
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
     transition: background-color 0.3s, color 0.3s;
 }
 
 /* Botón de tema */
-.theme-toggle {
+.alternar-tema {
     position: fixed;
     top: 1rem;
     right: 1rem;
     background: none;
-    border: 2px solid var(--border-color);
-    color: var(--text-color);
+    border: 2px solid var(--color-borde);
+    color: var(--color-texto);
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -94,19 +94,19 @@ body {
     padding: 0;
 }
 
-.theme-toggle:hover {
+.alternar-tema:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Botón de modo daltónico */
-.colorblind-toggle {
+.alternar-daltonico {
     position: fixed;
     top: 1rem;
     right: 5rem;
     background: none;
-    border: 2px solid var(--border-color);
-    color: var(--text-color);
+    border: 2px solid var(--color-borde);
+    color: var(--color-texto);
     width: 48px;
     height: 48px;
     border-radius: 50%;
@@ -119,42 +119,42 @@ body {
     padding: 0;
 }
 
-.colorblind-toggle:hover {
+.alternar-daltonico:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Botón de instrucciones */
-.instructions-toggle {
+.alternar-instrucciones {
     position: fixed;
     top: 1rem;
     left: 1rem;
     background: none;
-    border: 2px solid var(--border-color);
-    color: var(--text-color);
+    border: 2px solid var(--color-borde);
+    color: var(--color-texto);
     width: 48px;
     height: 48px;
     border-radius: 50%;
     cursor: pointer;
     font-size: 1.5rem;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
     padding: 0;
 }
 
-.instructions-toggle:hover {
+.alternar-instrucciones:hover {
     transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Página de bienvenida */
-.welcome-page {
+.pagina-bienvenida {
     text-align: center;
     max-width: 600px;
     padding: 2rem;
-    background-color: var(--card-bg);
+    background-color: var(--color-tarjeta);
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s;
@@ -162,40 +162,40 @@ body {
 
 /* Estilos para el logo */
 .logo-eldrow {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     margin-right: 10px;
 }
 
 /* Estilos para el encabezado de bienvenida */
-.welcome-header {
+.encabezado-bienvenida {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 1.5rem;
 }
 
-.welcome-title {
-    color: var(--text-color);
-    font-size: 2.5rem;
-    margin-bottom: 1.5rem;
+.titulo-bienvenida {
+    color: var(--color-texto);
+    font-size: 3.5rem;
+    margin: 0;
 }
 
-.instructions {
+.instrucciones {
     margin-bottom: 2rem;
     line-height: 1.6;
-    color: var(--text-color);
+    color: var(--color-texto);
 }
 
-.instruction-grid {
+.cuadricula-instrucciones {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     margin: 1.5rem 0;
 }
 
-.instruction-box {
-    background-color: var(--instruction-box-bg);
+.caja-instruccion {
+    background-color: var(--color-caja-instruccion);
     padding: 1rem;
     border-radius: 8px;
     transition: background-color 0.3s;
@@ -203,11 +203,11 @@ body {
     align-items: center;
 }
 
-.instruction-box p {
+.caja-instruccion p {
     margin: 0;
 }
 
-.play-button {
+.boton-jugar {
     background-color: #3eba1b;
     color: white;
     border: none;
@@ -221,34 +221,34 @@ body {
     letter-spacing: 1px;
 }
 
-.play-button:hover {
+.boton-jugar:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(106, 170, 100, 0.4);
     background-color: #5c9658;
 }
 
-.play-button:active {
+.boton-jugar:active {
     transform: translateY(0);
 }
 
 /* Contenedor del juego */
-.game-container {
+.contenedor-juego {
     display: none;
 }
 
-.game-container.visible {
+.contenedor-juego.visible {
     display: block;
 }
 
-.game-container.celebracion {
+.contenedor-juego.celebracion {
     position: relative;
 }
 
-.game-container.celebracion::after {
+.contenedor-juego.celebracion::after {
     display: none;
 }
 
-.div_juego {
+.area-juego {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -257,7 +257,7 @@ body {
 }
 
 /* Estilos para el encabezado del juego */
-.game-header {
+.encabezado-juego {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -265,8 +265,8 @@ body {
 }
 
 .titulo {
-    color: var(--text-color);
-    font-size: 2.5rem;
+    color: var(--color-texto);
+    font-size: 3.5rem;
     margin: 0;
 }
 
@@ -285,15 +285,15 @@ body {
 .celda {
     width: 50px;
     height: 50px;
-    border: 2px solid var(--border-color);
+    border: 2px solid var(--color-borde);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 1.5rem;
     font-weight: bold;
     text-transform: uppercase;
-    background-color: var(--card-bg);
-    color: var(--text-color);
+    background-color: var(--color-tarjeta);
+    color: var(--color-texto);
     transition: all 0.3s ease;
 }
 
@@ -335,8 +335,8 @@ body {
     height: 58px;
     border-radius: 4px;
     border: none;
-    background-color: var(--key-bg);
-    color: var(--text-color);
+    background-color: var(--color-tecla);
+    color: var(--color-texto);
     font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
@@ -345,7 +345,7 @@ body {
 }
 
 .tecla:not(.ausente):hover {
-    background-color: var(--key-hover);
+    background-color: var(--color-tecla-hover);
     transform: scale(1.05);
 }
 
@@ -371,29 +371,29 @@ body {
 }
 
 /* Mensaje de alerta y botón de volver a jugar */
-.mensaje_alerta {
+.mensaje-alerta {
     position: fixed;
     top: 40%;
     left: 50%;
     transform: translate(-50%, 0%);
-    background-color: rgb(0 0 0 / 60%);
+    background-color: rgb(0 0 0 / 50%);
     color: white;
-    padding: 15px 30px;
+    padding: 15px 10px;
     border-radius: 10px;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     text-align: center;
+    min-width: 360px;
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
-    z-index: 1000;
 }
 
-.mensaje_alerta.mostrar {
+.mensaje-alerta.mostrar {
     opacity: 1;
     pointer-events: auto;
 }
 
-.play-again-button {
+.boton-volver-jugar {
     background-color: #3eba1b;
     color: white;
     border: none;
@@ -411,13 +411,13 @@ body {
     margin-right: auto;
 }
 
-.play-again-button:hover {
+.boton-volver-jugar:hover {
     background-color: #5c9658;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.play-again-button:focus {
+.boton-volver-jugar:focus {
     outline: 2px solid #3eba1b;
     outline-offset: 2px;
 }
@@ -425,6 +425,8 @@ body {
 /* Estilos para la ventana modal de instrucciones */
 .modal {
     display: none;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -432,24 +434,24 @@ body {
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgba(0,0,0,0.6);
+    background-color: rgba(0, 0, 0, 0.6);
     backdrop-filter: blur(5px);
 }
 
 .modal-content {
-    background-color: var(--card-bg);
+    background-color: var(--color-tarjeta);
     margin: 10% auto;
     padding: 30px;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--color-borde);
     border-radius: 15px;
     width: 90%;
     max-width: 600px;
-    color: var(--text-color);
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    color: var(--color-texto);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-.close {
-    color: var(--text-color);
+.cerrar {
+    color: var(--color-texto);
     float: right;
     font-size: 32px;
     font-weight: bold;
@@ -457,46 +459,39 @@ body {
     transition: color 0.3s ease;
 }
 
-.close:hover,
-.close:focus {
+.cerrar:hover,
+.cerrar:focus {
     color: #888;
     text-decoration: none;
 }
 
 .modal h2 {
-    color: var(--text-color);
-    font-size: 2rem;
+    color: var(--color-texto);
+    font-size: 2.5rem;
     margin-bottom: 20px;
     text-align: center;
+    margin-top: 38px;
 }
 
 .modal p {
-    margin-bottom: 15px;
     line-height: 1.6;
     text-align: center;
 }
 
-.modal .instruction-grid {
+.modal .cuadricula-instrucciones {
     margin-top: 25px;
     margin-bottom: 25px;
 }
 
-.modal .instruction-box {
+.modal .caja-instruccion {
     padding: 15px;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.colorblind-info {
-    margin-top: 1.5rem;
+.info-extra-intrucciones {
     font-style: italic;
     text-align: center;
-}
-
-/* Ajustar el tamaño del título */
-.welcome-title, .titulo {
-    font-size: 2.5rem;
-    margin: 0;
 }
 
 /* Estilos para los fuegos artificiales */
@@ -507,7 +502,8 @@ body {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    z-index: -1; /* Coloca los fuegos artificiales detrás del contenido */
+    z-index: -1;
+    /* Coloca los fuegos artificiales detrás del contenido */
 }
 
 #fuegos-artificiales-canvas {
@@ -528,8 +524,9 @@ body {
     transform: scale(0);
 }
 
-.fuego::before, .fuego::after {
-    content: '';
+.fuego::before,
+.fuego::after {
+    content: "";
     position: absolute;
     width: 200%;
     height: 200%;
@@ -545,9 +542,11 @@ body {
         transform: scale(0) translate(-50%, 0);
         opacity: 1;
     }
+
     50% {
         opacity: 1;
     }
+
     100% {
         transform: scale(1) translate(-50%, -1000%);
         opacity: 0;
@@ -560,10 +559,10 @@ body {
         height: 0%;
         opacity: 0.5;
     }
+
     100% {
         width: 300%;
         height: 300%;
         opacity: 0;
     }
 }
-
