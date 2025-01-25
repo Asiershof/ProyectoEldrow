@@ -240,6 +240,14 @@ body {
     display: block;
 }
 
+.contenedor-juego.celebracion {
+    position: relative;
+}
+
+.contenedor-juego.celebracion::after {
+    display: none;
+}
+
 .area-juego {
     display: flex;
     flex-direction: column;
@@ -438,6 +446,21 @@ body {
     max-width: 600px;
     color: var(--color-texto);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.cerrar {
+    color: var(--color-texto);
+    float: right;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.cerrar:hover,
+.cerrar:focus {
+    color: #888;
+    text-decoration: none;
 }
 
 .modal h2 {
